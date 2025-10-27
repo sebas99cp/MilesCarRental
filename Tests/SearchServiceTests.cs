@@ -50,8 +50,8 @@ public class SearchServiceTests
         // Arrange
         var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE"
+    PickupLocation = "YOPAL",
+     ReturnLocation = "YOPAL"
         };
 
         // Act
@@ -64,7 +64,7 @@ public class SearchServiceTests
         {
             var vehicle = _vehicles.First(x => x.Id == v.Id);
             vehicle.IsAvailable.Should().BeTrue();
-        }
+    }
         result.Vehicles.Should().NotContain(v => v.Id == "VH-005"); // Unavailable vehicle
     }
 
@@ -74,21 +74,21 @@ public class SearchServiceTests
         // Arrange
         var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE"
-        };
+      PickupLocation = "YOPAL",
+            ReturnLocation = "YOPAL"
+      };
 
-        // Act
-        var result = await _searchService.SearchAsync(request);
+   // Act
+  var result = await _searchService.SearchAsync(request);
 
         // Assert
         result.Market.Should().Be("CASANARE");
-        result.Vehicles.Should().NotBeEmpty();
+   result.Vehicles.Should().NotBeEmpty();
         // Check all returned vehicles operate in CASANARE market
-        foreach (var v in result.Vehicles)
+    foreach (var v in result.Vehicles)
         {
-            var vehicle = _vehicles.First(x => x.Id == v.Id);
-            vehicle.MarketDepartments.Should().Contain(x => x.Equals("CASANARE", StringComparison.OrdinalIgnoreCase));
+  var vehicle = _vehicles.First(x => x.Id == v.Id);
+          vehicle.MarketDepartments.Should().Contain(x => x.Equals("CASANARE", StringComparison.OrdinalIgnoreCase));
         }
     }
 
@@ -98,79 +98,77 @@ public class SearchServiceTests
         // Arrange
         var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE"
+         PickupLocation = "YOPAL",
+  ReturnLocation = "YOPAL"
         };
 
         // Act
-        var result = await _searchService.SearchAsync(request);
+     var result = await _searchService.SearchAsync(request);
 
         // Assert
         result.Vehicles.Should().NotBeEmpty();
-        // Check all returned vehicles operate in YOPAL
+// Check all returned vehicles operate in YOPAL
         foreach (var v in result.Vehicles)
-        {
-            var vehicle = _vehicles.First(x => x.Id == v.Id);
-            vehicle.Municipalities.Should().Contain(m => m.Equals("YOPAL", StringComparison.OrdinalIgnoreCase));
-        }
+     {
+   var vehicle = _vehicles.First(x => x.Id == v.Id);
+       vehicle.Municipalities.Should().Contain(m => m.Equals("YOPAL", StringComparison.OrdinalIgnoreCase));
+  }
     }
 
     [Fact]
     public async Task SearchAsync_ShouldFilterByReturnMunicipio_WhenDifferentFromPickup()
     {
-        // Arrange
+      // Arrange
         var request = new VehicleSearchRequestDto
-        {
+      {
             PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
             ReturnLocation = "AGUAZUL" // Different from pickup
-        };
+      };
 
         // Act
-        var result = await _searchService.SearchAsync(request);
+     var result = await _searchService.SearchAsync(request);
 
-        // Assert
+      // Assert
         result.Vehicles.Should().NotBeEmpty();
         // Check all returned vehicles operate in both locations
         foreach (var v in result.Vehicles)
         {
-            var vehicle = _vehicles.First(x => x.Id == v.Id);
+        var vehicle = _vehicles.First(x => x.Id == v.Id);
             vehicle.Municipalities.Should().Contain(m => m.Equals("YOPAL", StringComparison.OrdinalIgnoreCase));
-            vehicle.Municipalities.Should().Contain(m => m.Equals("AGUAZUL", StringComparison.OrdinalIgnoreCase));
+        vehicle.Municipalities.Should().Contain(m => m.Equals("AGUAZUL", StringComparison.OrdinalIgnoreCase));
         }
         result.Vehicles.Should().Contain(v => v.Id == "VH-001"); // Operates in both YOPAL and AGUAZUL
         result.Vehicles.Should().NotContain(v => v.Id == "VH-002"); // Only operates in YOPAL and TAURAMENA
-    }
+  }
 
     [Fact]
     public async Task SearchAsync_ShouldSetAllowsDifferentDropoff_WhenReturnDifferent()
-    {
-        // Arrange
+  {
+// Arrange
         var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ReturnLocation = "AGUAZUL"
-        };
+         PickupLocation = "YOPAL",
+ ReturnLocation = "AGUAZUL"
+     };
 
         // Act
-        var result = await _searchService.SearchAsync(request);
+ var result = await _searchService.SearchAsync(request);
 
         // Assert
         result.Vehicles.Should().Contain(v => v.Id == "VH-001");
-        var vehicle = result.Vehicles.First(v => v.Id == "VH-001");
-        vehicle.AllowsDifferentDropoff.Should().BeTrue();
+      var vehicle = result.Vehicles.First(v => v.Id == "VH-001");
+    vehicle.AllowsDifferentDropoff.Should().BeTrue();
     }
 
     [Fact]
-    public async Task SearchAsync_ShouldFilterByClassCode_WhenProvided()
+ public async Task SearchAsync_ShouldFilterByClassCode_WhenProvided()
     {
         // Arrange
         var request = new VehicleSearchRequestDto
-        {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ClassCode = "SUV"
+     {
+     PickupLocation = "YOPAL",
+     ReturnLocation = "YOPAL",
+ ClassCode = "SUV"
         };
 
         // Act
@@ -178,27 +176,27 @@ public class SearchServiceTests
 
         // Assert
         result.Vehicles.Should().NotBeEmpty();
-        result.Vehicles.Should().OnlyContain(v => v.ClassCode.Equals("SUV", StringComparison.OrdinalIgnoreCase));
-        result.Vehicles.Should().Contain(v => v.Id == "VH-002");
+   result.Vehicles.Should().OnlyContain(v => v.ClassCode.Equals("SUV", StringComparison.OrdinalIgnoreCase));
+     result.Vehicles.Should().Contain(v => v.Id == "VH-002");
     }
 
     [Fact]
     public async Task SearchAsync_ShouldNotFilterByClassCode_WhenNotProvided()
     {
         // Arrange
-        var request = new VehicleSearchRequestDto
+   var request = new VehicleSearchRequestDto
         {
             PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE"
+            ReturnLocation = "YOPAL"
         };
 
-        // Act
+    // Act
         var result = await _searchService.SearchAsync(request);
 
         // Assert
         result.Vehicles.Should().NotBeEmpty();
         var classCodes = result.Vehicles.Select(v => v.ClassCode).Distinct();
-        classCodes.Should().HaveCountGreaterThan(1); // Multiple class codes
+  classCodes.Should().HaveCountGreaterThan(1); // Multiple class codes
     }
 
     [Fact]
@@ -207,10 +205,10 @@ public class SearchServiceTests
         // Arrange
         var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            Page = 1,
-            PageSize = 2
+PickupLocation = "YOPAL",
+ ReturnLocation = "YOPAL",
+         Page = 1,
+ PageSize = 2
         };
 
         // Act
@@ -218,7 +216,7 @@ public class SearchServiceTests
 
         // Assert
         result.Vehicles.Should().HaveCount(2);
-        result.Paging.Page.Should().Be(1);
+   result.Paging.Page.Should().Be(1);
         result.Paging.PageSize.Should().Be(2);
         result.Paging.Total.Should().BeGreaterThanOrEqualTo(2);
         result.Paging.TotalPages.Should().Be((int)Math.Ceiling(result.Paging.Total / (double)result.Paging.PageSize));
@@ -226,15 +224,15 @@ public class SearchServiceTests
 
     [Fact]
     public async Task SearchAsync_ShouldReturnSecondPage()
-    {
+  {
         // Arrange
-        var request = new VehicleSearchRequestDto
+    var request = new VehicleSearchRequestDto
         {
             PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
+       ReturnLocation = "YOPAL",
             Page = 2,
-            PageSize = 2
-        };
+    PageSize = 2
+    };
 
         // Act
         var result = await _searchService.SearchAsync(request);
@@ -249,10 +247,10 @@ public class SearchServiceTests
     {
         // Arrange
         var request = new VehicleSearchRequestDto
-        {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            PageSize = 200 // Exceeds max
+      {
+ PickupLocation = "YOPAL",
+      ReturnLocation = "YOPAL",
+    PageSize = 200 // Exceeds max
         };
 
         // Act
@@ -266,91 +264,71 @@ public class SearchServiceTests
     public async Task SearchAsync_ShouldDefaultToPage1_WhenPageIsZeroOrNegative()
     {
         // Arrange
-        var request = new VehicleSearchRequestDto
+    var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            Page = 0
+    PickupLocation = "YOPAL",
+            ReturnLocation = "YOPAL",
+       Page = 0
         };
 
         // Act
-        var result = await _searchService.SearchAsync(request);
+   var result = await _searchService.SearchAsync(request);
 
         // Assert
-        result.Paging.Page.Should().Be(1);
+      result.Paging.Page.Should().Be(1);
     }
 
     [Fact]
     public async Task SearchAsync_ShouldThrowException_WhenPickupLocationNotFound()
-    {
-        // Arrange
-        var request = new VehicleSearchRequestDto
+  {
+      // Arrange
+      var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "INVALID",
-            PickupDepartment = "CASANARE"
-        };
+  PickupLocation = "INVALID",
+    ReturnLocation = "YOPAL"
+    };
 
         // Act
         Func<Task> act = async () => await _searchService.SearchAsync(request);
 
         // Assert
-        await act.Should().ThrowAsync<LocationNotFoundException>()
+    await act.Should().ThrowAsync<LocationNotFoundException>()
             .WithMessage("*INVALID*");
     }
 
     [Fact]
     public async Task SearchAsync_ShouldThrowException_WhenReturnLocationNotFound()
     {
-        // Arrange
-        var request = new VehicleSearchRequestDto
+   // Arrange
+    var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ReturnLocation = "INVALID"
+ PickupLocation = "YOPAL",
+  ReturnLocation = "INVALID"
         };
 
         // Act
         Func<Task> act = async () => await _searchService.SearchAsync(request);
 
-        // Assert
+    // Assert
         await act.Should().ThrowAsync<LocationNotFoundException>()
        .WithMessage("*INVALID*");
     }
 
     [Fact]
-    public async Task SearchAsync_ShouldThrowException_WhenDepartmentDoesNotMatch()
+  public async Task SearchAsync_ShouldReturnCorrectPickupAndReturnLocations()
     {
-        // Arrange
-        var request = new VehicleSearchRequestDto
+  // Arrange
+var request = new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CUNDINAMARCA" // Wrong department
-        };
-
-        // Act
-        Func<Task> act = async () => await _searchService.SearchAsync(request);
-
-        // Assert
-        await act.Should().ThrowAsync<DepartmentMismatchException>()
-               .WithMessage("*CUNDINAMARCA*CASANARE*");
-    }
-
-    [Fact]
-    public async Task SearchAsync_ShouldReturnCorrectPickupAndReturnLocations()
-    {
-        // Arrange
-        var request = new VehicleSearchRequestDto
-        {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ReturnLocation = "AGUAZUL"
+       PickupLocation = "YOPAL",
+      ReturnLocation = "AGUAZUL"
         };
 
         // Act
         var result = await _searchService.SearchAsync(request);
 
-        // Assert
-        result.Pickup.MunicipioId.Should().Be("YOPAL");
+     // Assert
+     result.Pickup.MunicipioId.Should().Be("YOPAL");
         result.Pickup.DepartamentoId.Should().Be("CASANARE");
         result.Pickup.Nombre.Should().Be("Yopal");
 
@@ -362,24 +340,24 @@ public class SearchServiceTests
     [Fact]
     public async Task SearchAsync_ShouldMapVehicleDetailsCorrectly()
     {
-        // Arrange
-        var request = new VehicleSearchRequestDto
-        {
+      // Arrange
+   var request = new VehicleSearchRequestDto
+ {
             PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ClassCode = "ECON"
-        };
+     ReturnLocation = "YOPAL",
+        ClassCode = "ECON"
+    };
 
         // Act
-        var result = await _searchService.SearchAsync(request);
+    var result = await _searchService.SearchAsync(request);
 
         // Assert
         result.Vehicles.Should().NotBeEmpty();
         var vehicle = result.Vehicles.First();
         vehicle.ClassCode.Should().Be("ECON");
-        vehicle.ClassName.Should().Be("Económico");
-        vehicle.Seats.Should().Be(5);
+  vehicle.ClassName.Should().Be("Económico");
+      vehicle.Seats.Should().Be(5);
         vehicle.Transmission.Should().Be("AT");
         vehicle.Category.Should().Be("Car");
-    }
+  }
 }

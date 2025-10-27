@@ -9,12 +9,11 @@ public class VehicleSearchRequestExample : IExamplesProvider<VehicleSearchReques
     {
         return new VehicleSearchRequestDto
         {
-            PickupLocation = "YOPAL",
-            PickupDepartment = "CASANARE",
-            ReturnLocation = "AGUAZUL",
-            ClassCode = "SUV",
-            Page = 1,
-            PageSize = 20
+            PickupLocation = "BOGOTA",
+         ReturnLocation = "MEDELLIN",
+    ClassCode = "SUV",
+      Page = 1,
+  PageSize = 20
         };
     }
 }

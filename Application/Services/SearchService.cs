@@ -44,24 +44,15 @@ public sealed class SearchService : ISearchService
         VehicleSearchRequestDto request,
  CancellationToken ct)
     {
-        // Normalizar returnLocation si está vacío
-        var returnLocation = string.IsNullOrWhiteSpace(request.ReturnLocation)
-             ? request.PickupLocation
-          : request.ReturnLocation;
-
         // Validar y cargar ubicación de recogida
         var pickup = await _locations.GetByMunicipioIdAsync(request.PickupLocation, ct)
       ?? throw new LocationNotFoundException(request.PickupLocation);
 
         // Validar y cargar ubicación de devolución
-        var returnLoc = await _locations.GetByMunicipioIdAsync(returnLocation, ct)
-  ?? throw new LocationNotFoundException(returnLocation);
+        var returnLoc = await _locations.GetByMunicipioIdAsync(request.ReturnLocation!, ct)
+  ?? throw new LocationNotFoundException(request.ReturnLocation!);
 
-        // Verificar que el departamento proporcionado coincida con el municipio
-        if (!string.Equals(pickup.DepartamentoId, request.PickupDepartment, StringComparison.OrdinalIgnoreCase))
-            throw new DepartmentMismatchException(request.PickupDepartment, pickup.DepartamentoId, pickup.MunicipioId);
-
-        // Resolver el mercado
+        // Resolver el mercado basado en las ubicaciones
         var market = _marketResolver.ResolveMarket(pickup);
 
         return new ValidatedSearchRequest

@@ -9,19 +9,13 @@ public class VehicleSearchRequestValidator : AbstractValidator<VehicleSearchRequ
     {
         RuleFor(x => x.PickupLocation)
             .NotEmpty().WithMessage("Pickup location is required")
-    .MaximumLength(50).WithMessage("Pickup location must not exceed 50 characters")
+            .MaximumLength(50).WithMessage("Pickup location must not exceed 50 characters")
             .Matches("^[A-Z]+$").WithMessage("Pickup location must contain only uppercase letters");
 
-        RuleFor(x => x.PickupDepartment)
-    .NotEmpty().WithMessage("Pickup department is required")
-         .MaximumLength(50).WithMessage("Pickup department must not exceed 50 characters")
-  .Matches("^[A-Z ]+$").WithMessage("Pickup department must contain only uppercase letters and spaces");
-
         RuleFor(x => x.ReturnLocation)
-            .MaximumLength(50).When(x => !string.IsNullOrEmpty(x.ReturnLocation))
- .WithMessage("Return location must not exceed 50 characters")
-      .Matches("^[A-Z]+$").When(x => !string.IsNullOrEmpty(x.ReturnLocation))
-     .WithMessage("Return location must contain only uppercase letters");
+            .NotEmpty().WithMessage("Return location is required")
+            .MaximumLength(50).WithMessage("Return location must not exceed 50 characters")
+            .Matches("^[A-Z]+$").WithMessage("Return location must contain only uppercase letters");
 
         RuleFor(x => x.ClassCode)
             .MaximumLength(20).When(x => !string.IsNullOrEmpty(x.ClassCode))
