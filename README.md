@@ -89,8 +89,8 @@ curl -X GET "https://localhost:7000/api/v1/vehicles/search?pickupLocation=BOGOTA
   },
   "return": {
     "municipioId": "MEDELLIN",
- "municipioName": "Medellín",
-  "departamentoId": "ANTIOQUIA",
+    "municipioName": "Medellín",
+    "departamentoId": "ANTIOQUIA",
     "departamentoName": "Antioquia"
   },
   "criteria": {
@@ -105,16 +105,16 @@ curl -X GET "https://localhost:7000/api/v1/vehicles/search?pickupLocation=BOGOTA
     "totalPages": 2
   },
   "vehicles": [
-    {
+  {
       "vehicleId": "VH-001",
-"classCode": "SUV",
-  "className": "SUV Grande",
-   "capacity": 7,
+      "classCode": "SUV",
+      "className": "SUV Grande",
+      "capacity": 7,
       "transmission": "AT",
       "vehicleType": "SUV",
       "isElectric": false,
-      "allowsDifferentDropoff": true
-}
+ "allowsDifferentDropoff": true
+ }
   ]
 }
 ```
@@ -183,27 +183,27 @@ El sistema **detecta automáticamente el mercado** basándose en el municipio de r
 
 ```
 MilesCarRental/
-??? Domain/         # Capa de dominio
-?   ??? Entities/             # Entidades de negocio
-?   ??? Repositories/         # Interfaces de repositorios
-?   ??? Services/         # Interfaces de servicios de dominio
-?   ??? Specifications/       # Especificaciones de filtrado
+??? Domain/      # Capa de dominio
+?   ??? Entities/           # Entidades de negocio
+?   ??? Repositories/  # Interfaces de repositorios
+?   ??? Services/           # Interfaces de servicios de dominio
+?   ??? Specifications/     # Especificaciones de filtrado
 ?   ??? Exceptions/         # Excepciones de dominio
-??? Application/ # Capa de aplicación
-?   ??? DTOs/         # Data Transfer Objects
-?   ??? Services/            # Servicios de aplicación
-?   ??? Validators/ # Validadores FluentValidation
-?   ??? Extensions/          # Extensiones y mapeos
-??? Infrastructure/          # Capa de infraestructura
+??? Application/            # Capa de aplicación
+?   ??? DTOs/      # Data Transfer Objects
+?   ??? Services/      # Servicios de aplicación
+?   ??? Validators/         # Validadores FluentValidation
+?   ??? Extensions/         # Extensiones y mapeos
+??? Infrastructure/         # Capa de infraestructura
 ?   ??? InMemory/           # Repositorios en memoria
-?   ??? Extensions/     # Configuración de servicios
-??? MilesCarRental/         # Capa de presentación (API)
+?   ??? Extensions/  # Configuración de servicios
+??? MilesCarRental/    # Capa de presentación (API)
 ?   ??? Controllers/        # Controladores API
 ?   ??? Middleware/         # Middleware personalizado
-?   ??? Filters/           # Filtros de acción
-?   ??? HealthChecks/      # Health checks
+?   ??? Filters/            # Filtros de acción
+?   ??? HealthChecks/   # Health checks
 ?   ??? Swagger/    # Configuración Swagger
-??? Tests/        # Pruebas unitarias
+??? Tests/   # Pruebas unitarias
 ```
 
 ## ?? Contribución
